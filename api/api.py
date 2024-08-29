@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
+from .controllers import first
 
-app = FastAPI()
+api_router = APIRouter()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+api_router.include_router(first.router, tags=["first"])
+
