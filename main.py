@@ -1,9 +1,34 @@
 import uvicorn
 from fastapi import FastAPI
-from api.api import api_router
+from fastapi.middleware.cors import CORSMiddleware
+from app.controllers.api import api_router
+from dotenv import load_dotenv
+load_dotenv(".env")
+import os
 
 app = FastAPI()
+
+allowed_origins = [
+    "http://localhost",
+    "http://localhost/3000"
+]
+
+APP_ENVIRONMENT = os.environ.get("APP_ENVIRONMENT", None)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
+
 app.include_router(api_router, prefix='')
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="localhost", port=9292)
+ 
+
+if APP_ENVIRONMENT == APP_ENVIRONMENT:
+    print('ENVIRONMENT is APP_ENVIRONMENT')
