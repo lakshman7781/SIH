@@ -4,10 +4,10 @@ import os
 import json
 load_dotenv(".env")
 
-api_base = os.environ.get["API_BASE"]
-api_key = os.environ.get["API_KEY"]
-deployment_name = os.environ.get["DEPLOYMENT_NAME"]
-api_version = os.environ.get["API_VERSION"]
+api_base = os.environ["API_BASE"]
+api_key = os.environ["API_KEY"]
+deployment_name = os.environ["DEPLOYMENT_NAME"]
+api_version = os.environ["API_VERSION"]
 
 client = AzureOpenAI(
     api_key=api_key,

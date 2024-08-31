@@ -4,8 +4,10 @@ import PIL.Image
 import base64
 import io
 import os
+from dotenv import load_dotenv
+load_dotenv(".env")
 
-api_key=os.environ.get["GEMINI_KEY"]
+api_key=os.environ["GEMINI_KEY"]
 
 genai.configure(api_key=api_key)
 
