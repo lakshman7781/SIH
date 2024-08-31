@@ -18,5 +18,5 @@ def extract_text(file_path:str):
         poller = document_analysis_client.begin_analyze_document("prebuilt-read", f)
     result = poller.result()
 
-    print ("Document contains content: ", result.content)
+    return result.content
     
