@@ -1,4 +1,4 @@
-from fastapi import APIRouter,UploadFile,File
+from fastapi import APIRouter,UploadFile,File,Form
 from app.workflows.upload import document_process_workflow
 import os
 
@@ -10,7 +10,7 @@ def make_upload():
 
 # TODO: add document type to the request
 @router.post("/process_document")
-async def upload_file(document_type= str, file: UploadFile = File(...)):
+async def upload_file(document_type: str = Form(...), file: UploadFile = File(...)):
     temp_dir = "app/temp"
     file_location = os.path.join(temp_dir, file.filename)
     
