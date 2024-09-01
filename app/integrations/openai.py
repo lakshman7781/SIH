@@ -19,7 +19,7 @@ def get_chat_completion_openai(prompt: str, text: str):
     response = client.chat.completions.create(
         model=deployment_name,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant in document analysis which returns the extracted text in json format remove ' ```json 'in starting and ending while returning."},
+            {"role": "system", "content": "You are a helpful assistant in document analysis."},
             {
                 "role": "user",
                 "content": [
@@ -33,7 +33,8 @@ def get_chat_completion_openai(prompt: str, text: str):
                     }
                 ]
             }
-        ]
+        ],
+        response_format={"type": "json_object"}
     )
     return response.choices[0].message.content
 

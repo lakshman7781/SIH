@@ -24,39 +24,39 @@ func_resume_details = {
                 "type": "string",
                 "description": "github profile of the candidate (optional) provide if available"
             },
-            "Experience": {
+            "experience": {
                 "type": "string",
                 "description": "experience of the candidate"
             },
-            "Skills": {
+            "skills": {
                 "type": "array",
                 "items": {
                     "type": "string"
                 },
                 "description": "skills of the candidate"
             },
-            "Education": {
+            "education": {
                 "type": "array",
                 "items": {
                     "type": "string"
                 },
                 "description": "education of the candidate"
             },
-            "Certifications": {
+            "certifications": {
                 "type": "array",
                 "items": {
                     "type": "string"
                 },
                 "description": "certifications of the candidate"
             },
-            "Leadership_Roles": {
+            "leadership_roles": {
                 "type": "array",
                 "items": {
                     "type": "string"
                 },
                 "description": "leadership roles of the candidate"
             },
-            "Projects": {
+            "projects": {
                 "type": "array",
                 "items": {
                     "type": "string"
@@ -64,6 +64,6 @@ func_resume_details = {
                 "description": "projects of the candidate"
             },
         },
-        "required": ["candidate_name","mobile_number","email_id","linkedin_profile","github_profile","Experience", "Skills", "Education", "Certifications", "Leadership_Roles", "Projects"],
+        "required": ["candidate_name", "mobile_number", "email_id", "linkedin_profile", "github_profile", "experience", "skills", "education", "certifications", "leadership_roles", "projects"],
     },
 }
