@@ -10,7 +10,7 @@ def make_upload():
 
 # TODO: add document type to the request
 @router.post("/process_document")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(document_type= str, file: UploadFile = File(...)):
     temp_dir = "app/temp"
     file_location = os.path.join(temp_dir, file.filename)
     
@@ -18,7 +18,7 @@ async def upload_file(file: UploadFile = File(...)):
         with open(file_location, "wb") as f:
             f.write(await file.read())
         
-        structured_text = await document_process_workflow(file_path=file_location)
+        structured_text = await document_process_workflow(file_path=file_location, document_type=document_type)
         
         return {"message": "File uploaded successfully", "result": structured_text}
     

@@ -1,3 +1,15 @@
+DocumentType = {
+    "Resume": "Resume",
+    "CoverLetter": "CoverLetter",
+    "JobDescription": "JobDescription",
+}
+
+def get_function_call(document_type: str):
+    if document_type == DocumentType["Resume"]:
+        return func_resume_details
+    else:
+        return None
+       
 func_resume_details = {
     "name": "get_resume_details",
     "description": "Get the details of the candidate in the resume",
