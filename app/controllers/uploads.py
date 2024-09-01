@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,UploadFile,File
 from app.workflows.upload import data_pipeline
+import os
 
 router = APIRouter()
 
@@ -7,9 +8,14 @@ router = APIRouter()
 def make_upload():
     return {"message": "This is the upload endpoint"}
 
-@router.post("/uploadfile/")
-async def upload_file():
-    #todo: get the file dynamically
-    file_path = "samples/70__ATS_rating.pdf"
-    result = await data_pipeline(file_path=file_path)
-    return {"message": "File uploaded successfully", "result": result}
+#todo: add document type to the request
+@router.post("/process_document")
+async def upload_file(file: UploadFile = File(...)):
+    temp_dir = "app/temp"
+    file_location = os.path.join(temp_dir, file.filename)
+    with open(file_location, "wb") as f:
+        f.write(await file.read())
+        
+    structured_text = await data_pipeline(file_path=file_location)
+    os.remove(file_location)
+    return {"message": "File uploaded successfully", "result": structured_text}
