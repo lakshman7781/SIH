@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get("/upload")
 def make_upload():
-    return {"message": "This is the upload endpoint"}@router.post("/process_document")
+    return {"message": "This is the upload endpoint"}
 
 @router.post("/process_document")
 async def upload_file(document_type: DocumentType = Form(...), file: UploadFile = File(...)):
