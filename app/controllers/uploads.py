@@ -10,7 +10,7 @@ router = APIRouter()
 def make_upload():
     return {"message": "This is the upload endpoint"}@router.post("/process_document")
 
-
+@router.post("/process_document")
 async def upload_file(document_type: DocumentType = Form(...), file: UploadFile = File(...)):
     temp_dir = "app/temp"
     file_location = os.path.join(temp_dir, file.filename)
