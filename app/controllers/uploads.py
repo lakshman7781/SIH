@@ -1,16 +1,17 @@
-from fastapi import APIRouter,UploadFile,File,Form
+from fastapi import APIRouter, UploadFile, File, Form
 from app.workflows.upload import document_process_workflow
+from app.integrations.function_calls import DocumentType
+from enum import Enum
 import os
 
 router = APIRouter()
 
 @router.get("/upload")
 def make_upload():
-    return {"message": "This is the upload endpoint"}
+    return {"message": "This is the upload endpoint"}@router.post("/process_document")
 
-# TODO: add document type to the request
-@router.post("/process_document")
-async def upload_file(document_type: str = Form(...), file: UploadFile = File(...)):
+
+async def upload_file(document_type: DocumentType = Form(...), file: UploadFile = File(...)):
     temp_dir = "app/temp"
     file_location = os.path.join(temp_dir, file.filename)
     

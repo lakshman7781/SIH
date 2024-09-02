@@ -1,11 +1,12 @@
-DocumentType = {
-    "Resume": "Resume",
-    "CoverLetter": "CoverLetter",
-    "JobDescription": "JobDescription",
-}
+from enum import Enum
 
-def get_function_call(document_type: str):
-    if document_type == DocumentType["Resume"]:
+class DocumentType(Enum):
+    RESUME = "Resume"
+    COVER_LETTER = "CoverLetter"
+    JOB_DESCRIPTION = "JobDescription"
+
+def get_function_call(document_type: DocumentType):
+    if document_type == DocumentType.RESUME:
         return func_resume_details
     else:
         return None
