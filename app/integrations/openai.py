@@ -36,7 +36,9 @@ def get_chat_completion_openai(prompt: str, text: str):
         ],
         response_format={"type": "json_object"}
     )
-    return response.choices[0].message.content
+    response= response.choices[0].message.content
+    response= json.loads(response)
+    return response
 
 
 def get_image_details(images, prompt: str):

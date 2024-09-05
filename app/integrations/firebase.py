@@ -1,27 +1,28 @@
 from firebase_admin import credentials, initialize_app, storage
-
 from fastapi import HTTPException, UploadFile
 import mimetypes
+import logging
 
 def initialize_firebase_app():
     cred = credentials.Certificate("app/configs/firebase.json")
-    initialize_app(cred,{
-    'storageBucket': 'portfolio-8ccd0.com'
-})
+    initialize_app(cred, {
+        'storageBucket': 'portfolio-8ccd0.appspot.com'
+    })
 
-def upload_to_firebase(file: UploadFile):
+def upload_to_firebase(file, filename):
     try:
+        logging.info("Starting upload to Firebase")
         # Upload file to Firebase Storage
-        #todo: change the storage path
-        input_file = ""
         bucket = storage.bucket()
-        storage_path = f""
+        storage_path = f"Transformo_Docs/{filename}"
         blob = bucket.blob(storage_path)
-        content_type = mimetypes.guess_type(file.filename)[0]
-        blob.upload_from_file(file.file, content_type=content_type)
+        content_type = mimetypes.guess_type(filename)[0]
+        blob.upload_from_file(file, content_type=content_type)
+        logging.info(f"File uploaded to Firebase at {storage_path}")
         return storage_path
-    except:
-        raise HTTPException(status_code=500, detail="Error in uploading file to Firebase Storage.")
+    except Exception as e:
+        logging.error(f"Error in uploading file to Firebase Storage: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error in uploading file to Firebase Storage: {str(e)}")
 
     
 async def download_from_firebase(storage_path: str):
