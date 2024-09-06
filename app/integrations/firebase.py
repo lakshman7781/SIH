@@ -4,6 +4,7 @@ import mimetypes
 import logging
 import os 
 from datetime import timedelta
+import requests
 
 
 def initialize_firebase_app():
@@ -33,13 +34,23 @@ def upload_to_firebase(files, filenames):
         raise HTTPException(status_code=500, detail=f"Error in uploading file to Firebase Storage: {str(e)}")
 
     
-def download_from_firebase(storage_path: str):
+def download_from_firebase(url, filename):
     try:
-        # Download file from Firebase Storage
-        bucket = storage.bucket()
-        blob = bucket.blob(storage_path)
-        file_path = "app/temp/" + storage_path.split('/')[-1]
-        blob.download_to_filename(file_path)
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Ensure the app/temp directory exists
+        temp_dir = "app/temp"
+        os.makedirs(temp_dir, exist_ok=True)
+        
+        # Define the file path in the app/temp directory
+        file_path = os.path.join(temp_dir, filename)
+        
+        # Write the content to the file
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
+        
+        logging.info(f"File downloaded to {file_path}")
         return file_path
     except Exception as e:
         logging.error(f"Error in downloading file from Firebase Storage: {str(e)}")
