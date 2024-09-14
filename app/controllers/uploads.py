@@ -54,8 +54,8 @@ async def get_all_files():
     return {"files": file_paths}
 
 @router.get("/download")
-async def download_file():
-    storage_path = "Transformo_Docs/Krishna_vamsi_final/Krishna_vamsi_final.json"
+async def download_file(storage_path: str):
+    # storage_path = "Transformo_Docs/Krishna_vamsi_final/Krishna_vamsi_final.pdf"
     signed_url = get_download_url(storage_path)
     file_path = download_from_firebase(signed_url, storage_path.split('/')[-1])
     return FileResponse(file_path, media_type='application/octet-stream', filename=storage_path.split('/')[-1])
