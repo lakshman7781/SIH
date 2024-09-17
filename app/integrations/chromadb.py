@@ -4,7 +4,7 @@ from typing import List, Dict
 from azure.ai.inference import EmbeddingsClient
 from azure.core.credentials import AzureKeyCredential
 
-chroma_client = HttpClient("http://localhost:8000")
+chroma_client = HttpClient("http://chroma:8000")
 collection_client = chroma_client.get_or_create_collection("SIH")
 
 def add_document_to_collection(file_path,extracted_text,embeddings,document_type):
@@ -60,7 +60,7 @@ def rag_model(document_type:str, prompt: str, n_results: int = 10) -> Dict[str, 
     results = collection_client.query(
         query_embeddings=[prompt_embedding],
         n_results=n_results,
-        filters={"document_type": document_type}
+        where={"document_type": {"$ne": document_type}}
     )
     
     # Combine retrieved documents

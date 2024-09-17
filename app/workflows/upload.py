@@ -25,9 +25,11 @@ async def document_process_workflow(file_path: str, document_type: DocumentType)
     function_call = get_function_call(document_type)
     if function_call is not None:
         structured_text = extract_structured_data(input_text=text, function_list=function_call)
-        chunks = chunk_text(structured_text)
+        chunks = chunk_text(str(structured_text))
         embeddings = [get_embeddings(chunk) for chunk in chunks] 
-        add_embedding_to_collection(file_path=file_path, chunks=chunks, embeddings=embeddings, document_type=document_type)
+        res= add_embedding_to_collection(file_path=file_path, chunks=chunks, embeddings=embeddings, document_type=DocumentType(document_type).name)
+        print(res)
+        
     else:
         # TODO: implement a long prompt to extract important information from the document that is dependent on the AI
         structured_text=get_chat_completion_openai(prompt=document_analysis_prompt, text=text)

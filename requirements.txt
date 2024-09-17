@@ -12,3 +12,5 @@ PyMuPDF==1.23.26
 python-dotenv==1.0.0
 uvicorn==0.30.6
 azure-ai-inference==1.0.0b4
+chromadb==0.5.0
+numpy==1.25.1

@@ -62,10 +62,10 @@ async def download_file(storage_path: str):
     file_path = download_from_firebase(signed_url, storage_path.split('/')[-1])
     return FileResponse(file_path, media_type='application/octet-stream', filename=storage_path.split('/')[-1])
 
-@router.get("/rag")
-async def get_rag(document_type:str, prompt:str):
-    context = await rag_model(document_type,prompt)
-    response = await get_rag_final(prompt, context)
+@router.post("/rag")
+async def get_rag(document_type: str = Form(...), prompt: str = Form(...)):
+    context = rag_model(document_type, prompt)
+    response = get_rag_final(prompt, context)
     return response
     
     
