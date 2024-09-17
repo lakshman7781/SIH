@@ -117,3 +117,14 @@ def get_image_analysis_with_functioncall(images, function_list: list):
     response = response.choices[0].message
     output = json.loads(response.function_call.arguments)
     return output
+
+def get_rag_final(prompt: str, context: str) -> str:
+    response = client.chat.completions.create(
+        model=deployment_name,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant implementing a RAG model who answers in ENGLISH language only. Answer questions based on the provided context.{prompt_model}"},
+            {"role": "user", "content": f"Context: {context}\n\nQuestion: {prompt}"}
+        ],
+    )
+    response= response.choices[0].message.content
+    return response
