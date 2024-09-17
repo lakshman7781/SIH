@@ -2,6 +2,8 @@ from fastapi import APIRouter, UploadFile, File, Form
 from app.workflows.upload import document_process_workflow
 from app.integrations.function_calls import DocumentType
 from app.integrations.firebase import upload_to_firebase, list_files_from_firebase, download_from_firebase,get_download_url
+from app.integrations.openai import get_rag_final
+from app.integrations.chromadb import rag_model
 from fastapi.responses import FileResponse
 import os
 import json
@@ -59,3 +61,12 @@ async def download_file(storage_path: str):
     signed_url = get_download_url(storage_path)
     file_path = download_from_firebase(signed_url, storage_path.split('/')[-1])
     return FileResponse(file_path, media_type='application/octet-stream', filename=storage_path.split('/')[-1])
+
+@router.post("/rag")
+async def get_rag(document_type: str = Form(...), prompt: str = Form(...)):
+    context = rag_model(document_type, prompt)
+    response = get_rag_final(prompt, context)
+    return response
+    
+    
+    

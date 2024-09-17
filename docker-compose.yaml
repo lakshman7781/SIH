@@ -12,3 +12,12 @@ services:
       ports:
         - 9292:9292
       restart: always
+
+    chroma:
+      image: chromadb/chroma:latest
+      environment:
+        - IS_PERSISTENT=TRUE
+        - PERSIST_DIRECTORY=/var/lib/chromadb/data
+        - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-FALSE}
+      ports:
+        - 8000:8000
