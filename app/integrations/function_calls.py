@@ -6,6 +6,10 @@ class DocumentType(Enum):
     JOB_DESCRIPTION = "JobDescription"
     MARKS_MEMO = "MarksMemo"
     AADHAAR = "Aadhaar"
+    PAN = "Pan"
+    JOB_APPLICATION = "JobApplication"
+    LEAVE_REQUEST = "LeaveRequest"
+    PERFORMANCE_REVIEW = "PerformanceReview"
     TIMETABLE = "TimeTable"
     PANCARD = "PanCard"
     OFFER_LETTER = "OfferLetter"
@@ -39,6 +43,7 @@ def get_function_call(document_type: DocumentType):
         return func_job_payroll_document_details 
     else:
         raise None
+        
 func_resume_details = {
     "name": "get_resume_details",
     "description": "Get the details of the candidate in the resume",
@@ -108,6 +113,7 @@ func_resume_details = {
         "required": ["candidate_name", "mobile_number", "email_id", "linkedin_profile", "github_profile", "experience", "skills", "education", "certifications", "leadership_roles", "projects"],
     },
 }
+
 func_cover_letter_details ={
   "name": "get_cover_letter_details",
   "description": "Get the details of the candidate's cover letter",
@@ -183,6 +189,7 @@ func_cover_letter_details ={
     ]
   }
 }
+
 func_marks_memo ={
   "name": "get_academic_report_details",
   "description": "Get the academic performance details of the student from the report",
@@ -323,6 +330,8 @@ func_aadhaar_details ={
     ]
   }
 }
+
+
 func_timetable ={
   "name": "get_college_timetable_details",
   "description": "Get the details of the college timetable",
@@ -433,7 +442,7 @@ func_pancard ={
       },
       "father_name": {
         "type": "string",
-        "description": "Father's name as per PAN card"
+        "description": "Father's name of the individual as per PAN card"
       },
       "date_of_birth": {
         "type": "string",
@@ -441,7 +450,11 @@ func_pancard ={
       },
       "gender": {
         "type": "string",
-        "description": "Gender of the individual (Male/Female/Other)"
+        "description": "Gender of the individual (Male/Female/Other)(optional)"
+      },
+      "date_of_issue": {
+        "type": "string",
+        "description": "Date of issue of the PAN card"
       },
       "issue_date": {
         "type": "string",
@@ -563,6 +576,71 @@ func_offer_letter ={
     ]
   }
 }
+
+func_job_application_details ={
+  "name": "job_application_details",
+  "description": "Collect the details of the individual applying for a job",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "full_name": {
+        "type": "string",
+        "description": "Full name of the applicant"
+      },
+      "email": {
+        "type": "string",
+        "description": "Email address of the applicant"
+      },
+      "phone_number": {
+        "type": "string",
+        "description": "Contact number of the applicant"
+      },
+      "date_of_birth": {
+        "type": "string",
+        "description": "Date of birth of the applicant (in DD/MM/YYYY format)"
+      },
+      "gender": {
+        "type": "string",
+        "description": "Gender of the applicant (Male/Female/Other)(optional)"
+      },
+      "position_applied_for": {
+        "type": "string",
+        "description": "Job position that the applicant is applying for"
+      },
+      "experience_years": {
+        "type": "number",
+        "description": "Number of years of work experience"
+      },
+      "skills": {
+        "type": "array",
+        "description": "List of skills possessed by the applicant",
+        "items": {
+          "type": "string"
+        }
+      },
+      "education": {
+        "type": "string",
+        "description": "Highest level of education completed by the applicant"
+      },
+      "resume_link": {
+        "type": "string",
+        "description": "Link to the applicant's resume"
+      }
+    },
+    "required": [
+      "full_name",
+      "email",
+      "phone_number",
+      "date_of_birth",
+      "position_applied_for",
+      "experience_years",
+      "skills",
+      "education",
+      "resume_link"
+    ]
+  }
+}
+
 func_employee_contracts ={
   "name": "get_employee_contract_details",
   "description": "Get the details of an employee's contract",
@@ -668,21 +746,21 @@ func_leave_requests_details ={
         "type": "string",
         "description": "Unique identifier for the employee"
       },
-      "employee_name": {
+      "full_name": {
         "type": "string",
         "description": "Full name of the employee"
       },
+      "email": {
+        "type": "string",
+        "description": "Email address of the employee"
+      },
       "department": {
         "type": "string",
-        "description": "Department of the employee"
-      },
-      "date_of_request": {
-        "type": "string",
-        "description": "Date when the leave request was submitted (in DD/MM/YYYY format)"
+        "description": "Department in which the employee works"
       },
       "leave_type": {
         "type": "string",
-        "description": "Type of leave requested (e.g., Sick Leave, Casual Leave, Vacation)"
+        "description": "Type of leave (e.g., Annual, Sick, Maternity, etc.)"
       },
       "start_date": {
         "type": "string",
@@ -694,6 +772,27 @@ func_leave_requests_details ={
       },
       "reason_for_leave": {
         "type": "string",
+        "description": "Reason for requesting leave"
+      },
+      "contact_during_leave": {
+        "type": "string",
+        "description": "Contact information during the leave period (optional)"
+      },
+      "approver_id": {
+        "type": "string",
+        "description": "ID of the manager or approver for the leave"
+      }
+    },
+    "required": [
+      "employee_id",
+      "full_name",
+      "email",
+      "department",
+      "leave_type",
+      "start_date",
+      "end_date",
+      "reason_for_leave",
+      "approver_id"
         "description": "Reason for taking the leave"
       },
       "approval_status": {
@@ -791,8 +890,7 @@ func_job_application_details ={
       "experience_years",
       "skills",
       "education",
-      "resume_link"
-    ]
+      "resume_link"    ]
   }
 }
 func_job_payroll_document_details ={
@@ -868,4 +966,4 @@ func_job_payroll_document_details ={
       "payment_method"
     ]
   }
-}
+
