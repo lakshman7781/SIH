@@ -32,8 +32,3 @@ app.include_router(api_router, prefix='')
 
 if APP_ENVIRONMENT == APP_ENVIRONMENT:
     print('ENVIRONMENT is APP_ENVIRONMENT')
-
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 9292))
-    uvicorn.run(app, host="0.0.0.0", port=port)
