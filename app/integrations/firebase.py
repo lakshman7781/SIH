@@ -40,7 +40,7 @@ def download_from_firebase(url, filename):
         response.raise_for_status()
         
         # Ensure the app/temp directory exists
-        temp_dir = "app/temp"
+        temp_dir = "app/trash"
         os.makedirs(temp_dir, exist_ok=True)
         
         # Define the file path in the app/temp directory

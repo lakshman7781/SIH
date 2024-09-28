@@ -18,7 +18,7 @@ def make_upload():
 
 @router.post("/process_document")
 async def upload_file(document_type: DocumentType = Form(...), file: UploadFile = File(...)):
-    temp_dir = "app/temp"
+    temp_dir = "app/trash"
     file_location = os.path.join(temp_dir, file.filename)
     json_filename = f"{os.path.splitext(file.filename)[0]}.json"
     json_file_location = os.path.join(temp_dir, json_filename)
