@@ -1,23 +1,28 @@
 services:
-    app:
-      container_name: SIH
-      build:
-        context: .
-        dockerfile: Dockerfile
-      command: bash -c "uvicorn main:app --host 0.0.0.0 --port 9292 --reload --workers 8"
-      environment:
-        - APP_ENVIRONMENT=APP_ENVIRONMENT
-      volumes:
-        - .:/app
-      ports:
-        - 9292:9292
-      restart: always
+  app:
+    container_name: SIH
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "uvicorn main:app --host 0.0.0.0 --port 9292 --reload --workers 8"
+    environment:
+      - APP_ENVIRONMENT=APP_ENVIRONMENT
+      - CHROMA_URL=http://chroma:8000
+    volumes:
+      - .:/app
+    ports:
+      - 9292:9292
+    restart: always
+    depends_on:
+      - chroma
 
-    chroma:
-      image: chromadb/chroma:latest
-      environment:
-        - IS_PERSISTENT=TRUE
-        - PERSIST_DIRECTORY=/var/lib/chromadb/data
-        - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-FALSE}
-      ports:
-        - 8000:8000
+  chroma:
+    image: chromadb/chroma:latest
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/var/lib/chromadb/data
+      - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-FALSE}
+    volumes:
+      - ./chroma_data:/var/lib/chromadb/data
+    ports:
+      - 8000:8000

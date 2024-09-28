@@ -3,8 +3,13 @@ from chromadb import HttpClient
 from typing import List, Dict
 from azure.ai.inference import EmbeddingsClient
 from azure.core.credentials import AzureKeyCredential
+import os
+from dotenv import load_dotenv
+load_dotenv(".env")
 
-chroma_client = HttpClient("http://chroma:8000")
+endpoint = os.environ["CHROMA_URL"]
+
+chroma_client = HttpClient(endpoint=endpoint)
 collection_client = chroma_client.get_or_create_collection("SIH")
 
 def add_document_to_collection(file_path,extracted_text,embeddings,document_type):
