@@ -11,7 +11,8 @@ app = FastAPI()
 
 allowed_origins = [
     "http://localhost",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://sih-fe.vercel.app",
 ]
 
 APP_ENVIRONMENT = os.environ.get("APP_ENVIRONMENT", None)
