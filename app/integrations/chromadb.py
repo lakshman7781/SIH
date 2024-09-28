@@ -9,7 +9,7 @@ load_dotenv(".env")
 
 endpoint = os.environ["CHROMA_URL"]
 
-chroma_client = HttpClient(endpoint=endpoint)
+chroma_client = HttpClient(endpoint)
 collection_client = chroma_client.get_or_create_collection("SIH")
 
 def add_document_to_collection(file_path,extracted_text,embeddings,document_type):
