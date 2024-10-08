@@ -7,7 +7,6 @@ from app.integrations.chromadb import rag_model
 from fastapi.responses import FileResponse
 import os
 import json
-import logging
 
 
 router = APIRouter()
@@ -18,36 +17,46 @@ def make_upload():
 
 @router.post("/process_document")
 async def upload_file(document_type: DocumentType = Form(...), file: UploadFile = File(...)):
+    print(f"Document type: {document_type}")
     temp_dir = "app/temp"
     file_location = os.path.join(temp_dir, file.filename)
     json_filename = f"{os.path.splitext(file.filename)[0]}.json"
     json_file_location = os.path.join(temp_dir, json_filename)
+    print(f"File location: {file_location}")
     
     try:
         with open(file_location, "wb") as f:
             f.write(await file.read())
+        print(f"File saved at: {file_location}")    
         
         structured_text = await document_process_workflow(file_path=file_location, document_type=document_type)
+        
+        print(f"Structured text: {structured_text}")
         
         # Save the result in a JSON file
         with open(json_file_location, "w") as json_file:
             json.dump(structured_text, json_file)
-
+        
+        print(f"JSON file saved at: {json_file_location}")
+        
         # Upload the actual file and the JSON file to Firebase
         with open(file_location, "rb") as actual_file, open(json_file_location, "rb") as json_file:
             upload_to_firebase([actual_file, json_file], [file.filename, json_filename])
-        
+            
+        print("Files uploaded to Firebase")
         return {"message": "File uploaded successfully", "result": structured_text}
     
     except Exception as e:
-        logging.error(f"Error in processing document: {str(e)}")
+        print(f"Error in processing document: {str(e)}")
         return {"error": str(e)}
     
     finally:
+        print("Cleaning up...")
         if os.path.exists(file_location):
             os.remove(file_location)
         if os.path.exists(json_file_location):
             os.remove(json_file_location)
+        print("Cleaned up")    
             
 @router.get("/get_all")
 async def get_all_files():
