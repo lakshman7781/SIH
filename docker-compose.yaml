@@ -6,18 +6,22 @@ services:
         dockerfile: Dockerfile
       command: bash -c "uvicorn main:app --host 0.0.0.0 --port 9292 --reload --workers 8"
       environment:
-        - APP_ENVIRONMENT=APP_ENVIRONMENT
+        - APP_ENVIRONMENT=${APP_ENVIRONMENT}
+        - CHROMA_API_KEY=${CHROMA_API_KEY}
+        - CHROMA_TENANT=${CHROMA_TENANT}
+        - CHROMA_DATABASE=${CHROMA_DATABASE}
       volumes:
         - .:/app
       ports:
         - 9292:9292
       restart: always
 
-    chroma:
-      image: chromadb/chroma:latest
-      environment:
-        - IS_PERSISTENT=TRUE
-        - PERSIST_DIRECTORY=/var/lib/chromadb/data
-        - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-FALSE}
-      ports:
-        - 8000:8000
+    # Commented out local ChromaDB service - using cloud deployment instead
+    # chroma:
+    #   image: chromadb/chroma:latest
+    #   environment:
+    #     - IS_PERSISTENT=TRUE
+    #     - PERSIST_DIRECTORY=/var/lib/chromadb/data
+    #     - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-FALSE}
+    #   ports:
+    #     - 8000:8000

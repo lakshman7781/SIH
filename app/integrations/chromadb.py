@@ -1,5 +1,5 @@
 import chromadb
-from chromadb import HttpClient
+# from chromadb import HttpClient  # Commented out for cloud deployment
 from typing import List, Dict
 from azure.ai.inference import EmbeddingsClient
 from azure.core.credentials import AzureKeyCredential
@@ -7,10 +7,17 @@ import os
 from dotenv import load_dotenv
 load_dotenv(".env")
 
-endpoint = os.environ["CHROMA_URL"]
+# Commented out local ChromaDB configuration for cloud deployment
+# endpoint = os.environ["CHROMA_URL"]
+# chroma_client = HttpClient(endpoint)
 
+# Cloud ChromaDB client configuration using environment variables
+chroma_client = chromadb.CloudClient(
+    api_key=os.environ["CHROMA_API_KEY"],
+    tenant=os.environ["CHROMA_TENANT"],
+    database=os.environ["CHROMA_DATABASE"]
+)
 
-chroma_client = HttpClient(endpoint)
 collection_client = chroma_client.get_or_create_collection("SIH")
 
 def add_document_to_collection(file_path,extracted_text,embeddings,document_type):
