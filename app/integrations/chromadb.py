@@ -1,10 +1,24 @@
 import chromadb
-from chromadb import HttpClient
+# from chromadb import HttpClient  # Commented out for cloud deployment
 from typing import List, Dict
 from azure.ai.inference import EmbeddingsClient
 from azure.core.credentials import AzureKeyCredential
+import os
+from app.integrations.openai import get_embeddings as openai_get_embeddings
+from dotenv import load_dotenv
+load_dotenv(".env")
 
-chroma_client = HttpClient("http://chroma:8000")
+# Commented out local ChromaDB configuration for cloud deployment
+# endpoint = os.environ["CHROMA_URL"]
+# chroma_client = HttpClient(endpoint)
+
+# Cloud ChromaDB client configuration using environment variables
+chroma_client = chromadb.CloudClient(
+    api_key=os.environ["CHROMA_API_KEY"],
+    tenant=os.environ["CHROMA_TENANT"],
+    database=os.environ["CHROMA_DATABASE"]
+)
+
 collection_client = chroma_client.get_or_create_collection("SIH")
 
 def add_document_to_collection(file_path,extracted_text,embeddings,document_type):
@@ -32,23 +46,7 @@ def add_embedding_to_collection(file_path: str, chunks: List[str], embeddings: L
     return f"Document added to collection: {file_path}"
 
 def get_embeddings(text):
-    endpoint = "https://models.inference.ai.azure.com"
-    model_name = "text-embedding-3-large"
-    token = "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"
-
-    client = EmbeddingsClient(
-        endpoint=endpoint,
-        credential=AzureKeyCredential(token)
-    )
-
-    response = client.embed(
-        input=[text],
-        model=model_name
-    )
-
-    # Flatten the embeddings
-    embeddings = [item for sublist in [item.embedding for item in response.data] for item in sublist]
-    return embeddings
+    return openai_get_embeddings(text)
 
 
 def rag_model(document_type:str, prompt: str, n_results: int = 10) -> Dict[str, str]:

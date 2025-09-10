@@ -15,7 +15,6 @@ class DocumentType(Enum):
     OFFER_LETTER = "OfferLetter"
     EMPLOYEE_CONTRACTS = "EmployeeContracts"
     LEAVE_REQUESTS = "LeaveRequests"
-    JOB_APPLICATION = "JobApplication"
     PAYROLL_DOCUMENT = "PayrollDocument"
 
 def get_function_call(document_type: DocumentType):
@@ -35,8 +34,6 @@ def get_function_call(document_type: DocumentType):
         return func_offer_letter
     elif document_type == DocumentType.EMPLOYEE_CONTRACTS:
         return func_employee_contracts 
-    elif document_type == DocumentType.LEAVE_REQUESTS:
-        return func_leave_requests_details  
     elif document_type == DocumentType.JOB_APPLICATION:
         return func_job_application_details
     elif document_type == DocumentType.PAYROLL_DOCUMENT:
@@ -732,105 +729,7 @@ func_employee_contracts ={
     ]
   }
 }
-func_leave_requests_details ={
-  "name": "get_leave_request_details",
-  "description": "Get the details from a leave request",
-  "parameters": {
-    "type": "object",
-    "properties": {
-      "leave_request_id": {
-        "type": "string",
-        "description": "Unique identifier for the leave request"
-      },
-      "employee_id": {
-        "type": "string",
-        "description": "Unique identifier for the employee"
-      },
-      "full_name": {
-        "type": "string",
-        "description": "Full name of the employee"
-      },
-      "email": {
-        "type": "string",
-        "description": "Email address of the employee"
-      },
-      "department": {
-        "type": "string",
-        "description": "Department in which the employee works"
-      },
-      "leave_type": {
-        "type": "string",
-        "description": "Type of leave (e.g., Annual, Sick, Maternity, etc.)"
-      },
-      "start_date": {
-        "type": "string",
-        "description": "Start date of the leave (in DD/MM/YYYY format)"
-      },
-      "end_date": {
-        "type": "string",
-        "description": "End date of the leave (in DD/MM/YYYY format)"
-      },
-      "reason_for_leave": {
-        "type": "string",
-        "description": "Reason for requesting leave"
-      },
-      "contact_during_leave": {
-        "type": "string",
-        "description": "Contact information during the leave period (optional)"
-      },
-      "approver_id": {
-        "type": "string",
-        "description": "ID of the manager or approver for the leave"
-      }
-    },
-    "required": [
-      "employee_id",
-      "full_name",
-      "email",
-      "department",
-      "leave_type",
-      "start_date",
-      "end_date",
-      "reason_for_leave",
-      "approver_id"
-        "description": "Reason for taking the leave"
-      },
-      "approval_status": {
-        "type": "string",
-        "description": "Current approval status of the leave (e.g., Pending, Approved, Rejected)"
-      },
-      "approving_manager": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the approving manager"
-          },
-          "contact_information": {
-            "type": "object",
-            "properties": {
-              "phone_number": {
-                "type": "string",
-                "description": "Manager's contact phone number"
-              },
-              "email_address": {
-                "type": "string",
-                "description": "Manager's email address"
-              }
-            },
-            "description": "Contact details for the approving manager"
-          }
-        },
-        "description": "Details of the manager responsible for approving the leave"
-      },
-      "remarks": {
-        "type": "string",
-        "description": "Additional remarks or comments related to the leave request"
-      }
-    },
-    "description": "Details of the leave request"
-  }
-}
+
 func_job_application_details ={
   "name": "job_application_details",
   "description": "Collect the details of the individual applying for a job",
@@ -966,4 +865,4 @@ func_job_payroll_document_details ={
       "payment_method"
     ]
   }
-
+}
