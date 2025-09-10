@@ -10,6 +10,7 @@ services:
         - CHROMA_API_KEY=${CHROMA_API_KEY}
         - CHROMA_TENANT=${CHROMA_TENANT}
         - CHROMA_DATABASE=${CHROMA_DATABASE}
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
       volumes:
         - .:/app
       ports:

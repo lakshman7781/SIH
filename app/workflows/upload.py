@@ -2,9 +2,8 @@ from prefect import flow, task
 from prefect.task_runners import SequentialTaskRunner
 from app.workflows.activities.upload import extract_text_from_pdf, extract_structured_data
 from app.integrations.function_calls import func_resume_details, get_function_call
-from app.integrations.openai import get_chat_completion_openai
+from app.integrations.openai import get_chat_completion_openai, get_embeddings
 from app.integrations.function_calls import DocumentType
-from app.integrations.github import get_embeddings
 from app.integrations.chromadb import add_embedding_to_collection
 from app.constants import document_analysis_prompt
 from enum import Enum
