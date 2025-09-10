@@ -6,7 +6,8 @@ google-ai-generativelanguage==0.6.15
 google-generativeai==0.8.5
 groq==0.31.1
 openai==1.63.0
-prefect==2.19.9
+prefect==2.20.21
+pydantic==2.9.2
 Pillow==10.4.0
 PyMuPDF==1.26.4
 python-dotenv==1.0.1

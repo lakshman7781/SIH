@@ -20,11 +20,13 @@ def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 100) -> List[st
     return [chunks[0]] + [chunks[i-1][-overlap:] + chunks[i] for i in range(1, len(chunks))]
 
 @flow(task_runner=SequentialTaskRunner())
-async def document_process_workflow(file_path: str, document_type: DocumentType):
+async def document_process_workflow(file_path: str, document_type: str):
     try:
-        print(f"Document type 2: {document_type}")
+        # Convert string to DocumentType enum
+        doc_type = DocumentType(document_type)
+        print(f"Document type 2: {doc_type}")
         text = extract_text_from_pdf(file_path)
-        function_call = get_function_call(document_type)
+        function_call = get_function_call(doc_type)
         print(f"Function call got")
         if function_call is not None:
             structured_text = extract_structured_data(input_text=text, function_list=function_call)
@@ -33,7 +35,7 @@ async def document_process_workflow(file_path: str, document_type: DocumentType)
             print(f"Chunks got")
             embeddings = [get_embeddings(chunk) for chunk in chunks] 
             print(f"Embeddings got")
-            res = add_embedding_to_collection(file_path=file_path, chunks=chunks, embeddings=embeddings, document_type=DocumentType(document_type).name)
+            res = add_embedding_to_collection(file_path=file_path, chunks=chunks, embeddings=embeddings, document_type=doc_type.name)
             print(f"Embeddings added to collection")
             logger.info(res)
         else:

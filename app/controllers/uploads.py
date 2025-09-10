@@ -29,7 +29,7 @@ async def upload_file(document_type: DocumentType = Form(...), file: UploadFile 
             f.write(await file.read())
         print(f"File saved at: {file_location}")    
         
-        structured_text = await document_process_workflow(file_path=file_location, document_type=document_type)
+        structured_text = await document_process_workflow(file_path=file_location, document_type=document_type.value)
         
         print(f"Structured text: {structured_text}")
         
